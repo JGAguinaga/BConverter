@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.bconverter.ui.screens.MenuScreen
 import com.example.bconverter.ui.screens.MoneyExchangeScreen
 import com.example.bconverter.ui.screens.TemperatureConverterScreen
 import kotlinx.serialization.Serializable
@@ -17,6 +18,9 @@ object MoneyExchange
 @Serializable
 object TemperatureConverter
 
+
+@Serializable
+object Menu
 @Composable
 fun MyConversionsApp() {
     val navController = rememberNavController()
@@ -24,12 +28,23 @@ fun MyConversionsApp() {
     Scaffold(
         modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
-        NavHost(navController, startDestination = MoneyExchange) {
+        NavHost(navController, startDestination = Menu) {
             composable<MoneyExchange> {
                 MoneyExchangeScreen(modifier = Modifier.padding(innerPadding))
             }
             composable<TemperatureConverter> {
                 TemperatureConverterScreen(modifier = Modifier.padding(innerPadding))
+            }
+            composable<Menu> {
+                MenuScreen(
+                    modifier = Modifier.padding(innerPadding),
+                    onMoneyExchangeClick = {
+                        navController.navigate(route = MoneyExchange)
+                    },
+                    onTemperatureConverterClick = {
+                        navController.navigate(route = TemperatureConverter)
+                    }
+                )
             }
         }
     }
